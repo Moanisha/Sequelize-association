@@ -69,3 +69,19 @@ exports.getUsersWorkingInADay = (req,res) => {
         res.status(404).send(err);
     })
 }
+
+exports.getEmployeesOfCompany = (req,res) => {
+    let companyId = req.params.id;
+    Company.findByPk(companyId, {
+        include: [{
+            model: User, as:'employees',
+            attributes: ['firstName']
+        }]
+    })
+    .then((user)=>{
+        res.json({details: user, message:'Fetched user details'})
+    })
+    .catch((err)=>{
+        res.status(404).send(err);
+    })
+}
